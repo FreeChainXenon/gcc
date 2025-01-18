@@ -11563,6 +11563,7 @@ linux* | k*bsd*-gnu | kopensolaris*-gnu | gnu* | uclinuxfdpiceabi)
   finish_cmds='PATH="\$PATH:/sbin" ldconfig -n $libdir'
   shlibpath_var=LD_LIBRARY_PATH
   shlibpath_overrides_runpath=no
+	lt_cv_shlibpath_overrides_runpath=no
 
   # Some binutils ld are patched to set DT_RUNPATH
   if ${lt_cv_shlibpath_overrides_runpath+:} false; then :
