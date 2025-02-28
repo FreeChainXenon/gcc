@@ -281,11 +281,6 @@ case ${host} in
   tmake_file="$tmake_file t-slibgcc t-slibgcc-gld t-slibgcc-elf-ver"
   extra_parts="crtbegin.o crtend.o crtbeginS.o crtendS.o"
   ;;
-*-fcx-*)
-  # Configuration for FreeChainXenon
-  tmake_file="${tmake_file} rs6000/t-ppccomm rs6000/t-crtstuff t-crtstuff-pic t-fdpbit"
-  extra_parts="$extra_parts crtbegin.o crtend.o crtbeginS.o crtendS.o crtbeginT.o ecrti.o ecrtn.o ncrti.o ncrtn.o"	
-  ;;
 *-*-freebsd*)
   # This is the generic ELF configuration of FreeBSD.  Later
   # machine-specific sections may refine and add to this
@@ -661,6 +656,11 @@ epiphany-*-elf* | epiphany-*-rtems*)
 	tmake_file="$tmake_file epiphany/t-epiphany t-fdpbit epiphany/t-custom-eqsf"
 	extra_parts="$extra_parts crti.o crtint.o crtrunc.o crtm1reg-r43.o crtm1reg-r63.o crtn.o"
 	;;
+*-fcx-*)
+	# Configuration for FreeChainXenon
+  	tmake_file="${tmake_file} rs6000/t-ppccomm rs6000/t-crtstuff t-crtstuff-pic t-fdpbit"
+  	extra_parts="$extra_parts crtbegin.o crtend.o crtbeginS.o crtendS.o crtbeginT.o ecrti.o ecrtn.o ncrti.o ncrtn.o"	
+  	;;
 fr30-*-elf)
 	tmake_file="$tmake_file fr30/t-fr30 t-fdpbit"
 	extra_parts="$extra_parts crti.o crtn.o"
