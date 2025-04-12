@@ -20,6 +20,10 @@
 #undef TARGET_DEBUG_STACK
 #define TARGET_DEBUG_STACK 1
 
+#if TARGET_64BIT == 0
+	#error "Building for 32 bit, should be 64 bit!"
+#endif
+
 /* Force the pointer size to 32 bits (even though we run in 64-bit mode) */
 //#undef POINTER_SIZE
 //#define POINTER_SIZE 32
