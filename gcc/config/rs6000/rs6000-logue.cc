@@ -828,7 +828,7 @@ rs6000_stack_info (void)
 
     case ABI_V4: /* Just replacing the SV4 ABI with the Xenon one... It's hacky, but I was having trouble defining a special ABI_XENON */
       info->cr_save_p = 0; /* We don't seem to save condition registers on 360 */
-      info->gp_save_offset = -0x18 - info->gp_size;
+      info->gp_save_offset = -0xC - info->gp_size;
       info->fp_save_offset = info->gp_save_offset - info->fp_size;
       info->vrsave_save_offset = info->fp_save_offset - info->vrsave_size;
 
