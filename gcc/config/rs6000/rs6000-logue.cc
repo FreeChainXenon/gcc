@@ -767,7 +767,7 @@ rs6000_stack_info (void)
       RS6000_ALIGN (crtl->outgoing_args_size + info->fixed_size,
 		    STACK_BOUNDARY / BITS_PER_UNIT) - info->fixed_size;
   else
-    info->parm_size  = RS6000_ALIGN (crtl->outgoing_args_size,
+    info->parm_size = RS6000_ALIGN (crtl->outgoing_args_size,
 				     TARGET_ALTIVEC ? 16 : 8);
   if (FRAME_GROWS_DOWNWARD)
     info->vars_size
@@ -826,34 +826,29 @@ rs6000_stack_info (void)
       info->lr_save_offset = 2*reg_size;
       break;
 
-    case ABI_V4:
-      info->fp_save_offset = -info->fp_size;
-      info->gp_save_offset = info->fp_save_offset - info->gp_size;
-      info->cr_save_offset = info->gp_save_offset - info->cr_size;
+    case ABI_V4: /* Just replacing the SV4 ABI with the Xenon one... It's hacky, but I was having trouble defining a special ABI_XENON */
+      info->cr_save_p = 0; /* We don't seem to save condition registers on 360 */
+      info->gp_save_offset = -0x18 - info->gp_size;
+      info->fp_save_offset = info->gp_save_offset - info->fp_size;
+      info->vrsave_save_offset = info->fp_save_offset - info->vrsave_size;
 
-      if (TARGET_ALTIVEC_ABI)
-	{
-	  info->vrsave_save_offset = info->cr_save_offset - info->vrsave_size;
+	  	/* Align stack so vector save area is on a quadword boundary.  */
+	  	if (info->altivec_size != 0)
+	    	info->altivec_padding_size = 16 - (-info->vrsave_save_offset % 16);
 
-	  /* Align stack so vector save area is on a quadword boundary.  */
-	  if (info->altivec_size != 0)
-	    info->altivec_padding_size = 16 - (-info->vrsave_save_offset % 16);
-
-	  info->altivec_save_offset = info->vrsave_save_offset
+	  	info->altivec_save_offset = info->vrsave_save_offset
 				      - info->altivec_padding_size
 				      - info->altivec_size;
 
-	  /* Adjust for AltiVec case.  */
-	  info->ehrd_offset = info->altivec_save_offset;
-	}
-      else
-	info->ehrd_offset = info->cr_save_offset;
+			/* Adjust for AltiVec case.  */
+	  	info->ehrd_offset = info->altivec_save_offset;
 
-      info->ehrd_offset -= ehrd_size;
-      info->lr_save_offset = reg_size;
+			info->ehrd_offset -= ehrd_size;
+    	info->lr_save_offset = -0x8;
+    	break;
     }
 
-  save_align = (TARGET_ALTIVEC_ABI || DEFAULT_ABI == ABI_DARWIN) ? 16 : 8;
+  save_align = ((TARGET_ALTIVEC_ABI || DEFAULT_ABI == ABI_DARWIN) && DEFAULT_ABI != ABI_V4) ? 16 : 8;
   info->save_size = RS6000_ALIGN (info->fp_size
 				  + info->gp_size
 				  + info->altivec_size
@@ -947,7 +942,7 @@ debug_stack_info (rs6000_stack_t *info)
     case ABI_AIX:	 abi_string = "AIX";		break;
     case ABI_ELFv2:	 abi_string = "ELFv2";		break;
     case ABI_DARWIN:	 abi_string = "Darwin";		break;
-    case ABI_V4:	 abi_string = "V.4";		break;
+    case ABI_V4:	 abi_string = "Xenon";		break;
     }
 
   fprintf (stderr, "\tABI                 = %5s\n", abi_string);
