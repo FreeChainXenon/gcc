@@ -1764,7 +1764,7 @@ epiphany-*-elf | epiphany-*-rtems*)
 	extra_headers="epiphany_intrinsics.h"
 	;;
 *-fcx-*)
-	tm_file="${tm_file} elfos.h gnu-user.h freebsd-spec.h newlib-stdint.h rs6000/sysv4.h rs6000/eabi.h rs6000/eabialtivec.h rs6000/xenon.h"
+	tm_file="${tm_file} elfos.h gnu-user.h freebsd-spec.h newlib-stdint.h rs6000/sysv4.h rs6000/eabi.h rs6000/default64.h rs6000/eabialtivec.h rs6000/xenon.h"
 	extra_options="${extra_options} rs6000/sysv4.opt"
 	tmake_file="rs6000/t-fprules rs6000/t-ppcendian rs6000/t-ppccomm"
 	use_gcc_stdint=wrap

@@ -20,13 +20,38 @@
 #undef TARGET_DEBUG_STACK
 #define TARGET_DEBUG_STACK 1
 
-#if TARGET_64BIT == 0
-	#error "Building for 32 bit, should be 64 bit!"
-#endif
-
 /* Force the pointer size to 32 bits (even though we run in 64-bit mode) */
-//#undef POINTER_SIZE
-//#define POINTER_SIZE 32
+#undef POINTER_SIZE
+#define POINTER_SIZE 32
+
+/* Make sure TARGET_64BIT is set to 1 */
+#undef TARGET_64BIT
+#define TARGET_64BIT 1
+#undef TARGET_32BIT
+#define TARGET_32BIT 0
+
+/* Add Altivec to target flags */
+#undef TARGET_DEFAULT
+#define TARGET_DEFAULT (OPTION_MASK_EABI | OPTION_MASK_ALTIVEC | OPTION_MASK_PPC_GFXOPT | OPTION_MASK_PPC_GPOPT \
+			| OPTION_MASK_MFCRF | MASK_POWERPC64 | MASK_64BIT)
+
+/* Redefine parameter boundary */
+#undef PARM_BOUNDARY
+#define PARM_BOUNDARY 64
+
+/* Redefine some debug data alignment. Could be useful later? */
+#undef DWARF_CIE_DATA_ALIGNMENT
+#define DWARF_CIE_DATA_ALIGNMENT -8
+
+/* Redefine the save area mode */
+#undef STACK_SAVEAREA_MODE
+#define STACK_SAVEAREA_MODE(LEVEL)	\
+  (LEVEL == SAVE_FUNCTION ? VOIDmode	\
+  : LEVEL == SAVE_NONLOCAL ? (TARGET_32BIT ? DImode : PTImode) : Pmode)
+
+/* Redefine stack size mode */
+#undef STACK_SIZE_MODE
+#define STACK_SIZE_MODE DImode
 
 /* Change the fixed area for the 360's stack frame convention */
 #undef RS6000_SAVE_AREA
