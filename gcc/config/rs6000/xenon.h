@@ -20,6 +20,13 @@
 #undef TARGET_DEBUG_STACK
 #define TARGET_DEBUG_STACK 1
 
+/* Force SV4 ABI option */
+//#undef RS6000_ABI_NAME
+//#define RS6000_ABI_NAME "sysv"
+
+//#undef DEFAULT_ABI
+//#define DEFAULT_ABI ABI_V4
+
 /* Force the pointer size to 32 bits (even though we run in 64-bit mode) */
 #undef POINTER_SIZE
 #define POINTER_SIZE 32
@@ -30,7 +37,7 @@
 #undef TARGET_32BIT
 #define TARGET_32BIT 0
 
-/* Add Altivec to target flags */
+/* Manually set flags */
 #undef TARGET_DEFAULT
 #define TARGET_DEFAULT (OPTION_MASK_EABI | OPTION_MASK_ALTIVEC | OPTION_MASK_PPC_GFXOPT | OPTION_MASK_PPC_GPOPT \
 			| OPTION_MASK_MFCRF | MASK_POWERPC64 | MASK_64BIT)

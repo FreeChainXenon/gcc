@@ -14025,6 +14025,7 @@ rs6000_output_function_entry (FILE *file, const char *fname)
 	default:
 	  gcc_unreachable ();
 
+    case ABI_V4:
 	case ABI_AIX:
 	  if (DOT_SYMBOLS)
 	    putc ('.', file);
@@ -14033,7 +14034,6 @@ rs6000_output_function_entry (FILE *file, const char *fname)
 	  break;
 
 	case ABI_ELFv2:
-	case ABI_V4:
 	case ABI_DARWIN:
 	  break;
 	}
