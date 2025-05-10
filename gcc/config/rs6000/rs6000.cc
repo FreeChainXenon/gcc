@@ -14025,7 +14025,6 @@ rs6000_output_function_entry (FILE *file, const char *fname)
 	default:
 	  gcc_unreachable ();
 
-    case ABI_V4:
 	case ABI_AIX:
 	  if (DOT_SYMBOLS)
 	    putc ('.', file);
@@ -14033,6 +14032,7 @@ rs6000_output_function_entry (FILE *file, const char *fname)
 	    ASM_OUTPUT_INTERNAL_LABEL_PREFIX (file, "L.");
 	  break;
 
+    case ABI_V4:
 	case ABI_ELFv2:
 	case ABI_DARWIN:
 	  break;
@@ -21297,7 +21297,7 @@ rs6000_elf_asm_out_destructor (rtx symbol, int priority)
 void
 rs6000_elf_declare_function_name (FILE *file, const char *name, tree decl)
 {
-  if (TARGET_64BIT && DEFAULT_ABI != ABI_ELFv2)
+  if (TARGET_64BIT && DEFAULT_ABI != ABI_ELFv2 && DEFAULT_ABI != ABI_V4)
     {
       fputs ("\t.section\t\".opd\",\"aw\"\n\t.align 3\n", file);
       ASM_OUTPUT_LABEL (file, name);
