@@ -28,8 +28,12 @@
 //#define DEFAULT_ABI ABI_V4
 
 /* Force the pointer size to 32 bits (even though we run in 64-bit mode) */
-#undef POINTER_SIZE
-#define POINTER_SIZE 32
+//#undef POINTER_SIZE
+//#define POINTER_SIZE 32
+//#undef POINTER_SIZE_UNITS
+//#define POINTER_SIZE_UNITS 4
+//#undef Pmode
+//#define Pmode SImode
 
 /* Make sure TARGET_64BIT is set to 1 */
 #undef TARGET_64BIT

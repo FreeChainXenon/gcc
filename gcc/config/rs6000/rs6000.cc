@@ -3651,7 +3651,7 @@ rs6000_option_override_internal (bool global_init_p)
     flag_variable_expansion_in_unroller = 1;
 
   /* Set the pointer size.  */
-  if (TARGET_64BIT)
+  if (TARGET_64BIT && DEFAULT_ABI != ABI_V4) /* ABI_V4 == Xenon */
     {
       rs6000_pmode = DImode;
       rs6000_pointer_size = 64;
@@ -17580,7 +17580,7 @@ output_toc (FILE *file, rtx x, int labelno, machine_mode mode)
       else
 	real_to_target (k, CONST_DOUBLE_REAL_VALUE (x), GET_MODE (x));
 
-      if (TARGET_64BIT)
+      if (TARGET_64BIT && DEFAULT_ABI != ABI_V4) /* ABI_V4 == Xenon */ 
 	{
 	  if (TARGET_ELF || TARGET_MINIMAL_TOC)
 	    fputs (DOUBLE_INT_ASM_OP, file);
@@ -17619,7 +17619,7 @@ output_toc (FILE *file, rtx x, int labelno, machine_mode mode)
       else
 	REAL_VALUE_TO_TARGET_DOUBLE (*CONST_DOUBLE_REAL_VALUE (x), k);
 
-      if (TARGET_64BIT)
+      if (TARGET_64BIT && DEFAULT_ABI != ABI_V4) /* ABI_V4 == Xenon */
 	{
 	  if (TARGET_ELF || TARGET_MINIMAL_TOC)
 	    fputs (DOUBLE_INT_ASM_OP, file);
@@ -17653,7 +17653,7 @@ output_toc (FILE *file, rtx x, int labelno, machine_mode mode)
       else
 	REAL_VALUE_TO_TARGET_SINGLE (*CONST_DOUBLE_REAL_VALUE (x), l);
 
-      if (TARGET_64BIT)
+      if (TARGET_64BIT && DEFAULT_ABI != ABI_V4) /* ABI_V4 == Xenon */
 	{
 	  if (TARGET_ELF || TARGET_MINIMAL_TOC)
 	    fputs (DOUBLE_INT_ASM_OP, file);
@@ -17703,7 +17703,7 @@ output_toc (FILE *file, rtx x, int labelno, machine_mode mode)
 	  low &= 0xffffffff;
 	}
 
-      if (TARGET_64BIT)
+      if (TARGET_64BIT && DEFAULT_ABI != ABI_V4) /* ABI_V4 == Xenon */
 	{
 	  if (TARGET_ELF || TARGET_MINIMAL_TOC)
 	    fputs (DOUBLE_INT_ASM_OP, file);
@@ -17767,7 +17767,8 @@ output_toc (FILE *file, rtx x, int labelno, machine_mode mode)
     }
 
   if (TARGET_ELF || TARGET_MINIMAL_TOC)
-    fputs (TARGET_32BIT ? "\t.long " : DOUBLE_INT_ASM_OP, file);
+    /* ABI_V4 == Xenon */
+    fputs ((TARGET_32BIT || DEFAULT_ABI == ABI_V4) ? "\t.long " : DOUBLE_INT_ASM_OP, file);
   else
     {
       fputs ("\t.tc ", file);
@@ -28796,7 +28797,8 @@ rs6000_gen_pic_addr_diff_vec (void)
 void
 rs6000_output_addr_vec_elt (FILE *file, int value)
 {
-  const char *directive = TARGET_64BIT ? DOUBLE_INT_ASM_OP : "\t.long\t";
+  /* ABI_V4 == Xenon */
+  const char *directive = (TARGET_64BIT && DEFAULT_ABI != ABI_V4) ? DOUBLE_INT_ASM_OP : "\t.long\t";
   char buf[100];
 
   fprintf (file, "%s", directive);
