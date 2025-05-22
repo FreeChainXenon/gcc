@@ -27,6 +27,8 @@
 #define POINTER_SIZE 32
 #undef Pmode
 #define Pmode SImode
+#undef POINTERS_EXTEND_UNSIGNED
+#define POINTERS_EXTEND_UNSIGNED 1
 
 /* Make sure TARGET_64BIT is set to 1 */
 #undef TARGET_64BIT

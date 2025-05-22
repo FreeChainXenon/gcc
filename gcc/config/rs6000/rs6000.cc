@@ -14831,7 +14831,6 @@ rs6000_assemble_integer (rtx x, unsigned int size, int aligned_p)
     }
 #endif /* RELOCATABLE_NEEDS_FIXUP */
 
-  fputs("\t# rs6000_assemble_integer - FREECHAINXENON\n", asm_out_file);
   return default_assemble_integer (x, size, aligned_p);
 }
 

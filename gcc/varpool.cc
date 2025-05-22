@@ -593,7 +593,6 @@ varpool_node::assemble_decl (void)
       && !DECL_EXTERNAL (decl))
     {
       get_constructor ();
-      fputs("\t# assemble_variable - FREECHAINXENON\n", asm_out_file);
       assemble_variable (decl, 0, 1, 0);
       gcc_assert (TREE_ASM_WRITTEN (decl));
       gcc_assert (definition);

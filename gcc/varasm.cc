@@ -2437,7 +2437,6 @@ assemble_variable (tree decl, int top_level ATTRIBUTE_UNUSED,
 	switch_to_section (sect, decl);
       if (align > BITS_PER_UNIT)
 	ASM_OUTPUT_ALIGN (asm_out_file, floor_log2 (align / BITS_PER_UNIT));
-      fputs("\t# assemble_variable_contents - FREECHAINXENON\n", asm_out_file);
       assemble_variable_contents (decl, name, dont_output_data,
 				  (sect->common.flags & SECTION_MERGE)
 				  && (sect->common.flags & SECTION_STRINGS));
@@ -2896,164 +2895,7 @@ integer_asm_op (int size, int aligned_p)
 void
 assemble_integer_with_op (const char *op, rtx x)
 {
-  /* FreeChainXenon workaround:
-     I'm not sure why, but references to symbols are emitted
-     using 64-bit directives, despite the pointer size being
-     set to 32-bit and the Pmode being set to SImode.
-
-     To sidestep this, we check whether the current RTX is a
-     symbol reference, and if it is, force the directive to be
-     32-bit. */
-#ifdef TARGET_POWERPC64
-  if (DEFAULT_ABI == ABI_V4
-      && (SYMBOL_REF_P(x) || MEM_P(x) || JUMP_TABLE_DATA_P(x) || LABEL_P(x)))
-    {
-      fputs ("\t.long\t", asm_out_file);
-    }
-  else
-    {
-      if(CONST_INT_P(x))
-        {
-          fputs("\t# assemble_integer_with_op - CONST_INT - FREECHAINXENON\n", asm_out_file);
-        }
-      if(CONST_WIDE_INT_P(x))
-        {
-          fputs("\t# assemble_integer_with_op - CONST_WIDE_INT - FREECHAINXENON\n", asm_out_file);
-        }
-      if(CONST_POLY_INT_P(x))
-        {
-          fputs("\t# assemble_integer_with_op - CONST_POLY_INT - FREECHAINXENON\n", asm_out_file);
-        }
-      if(CONST_FIXED_P(x))
-        {
-          fputs("\t# assemble_integer_with_op - CONST_FIXED - FREECHAINXENON\n", asm_out_file);
-        }
-      if(CONST_DOUBLE_P(x))
-        {
-          fputs("\t# assemble_integer_with_op - CONST_DOUBLE - FREECHAINXENON\n", asm_out_file);
-        }
-      if(CONST_DOUBLE_AS_INT_P(x))
-        {
-          fputs("\t# assemble_integer_with_op - CONST_DOUBLE_AS_INT - FREECHAINXENON\n", asm_out_file);
-        }
-      if(CONST_SCALAR_INT_P(x))
-        {
-          fputs("\t# assemble_integer_with_op - CONST_SCALAR_INT - FREECHAINXENON\n", asm_out_file);
-        }
-      if(CONST_DOUBLE_AS_FLOAT_P(x))
-        {
-          fputs("\t# assemble_integer_with_op - CONST_DOUBLE_AS_FLOAT - FREECHAINXENON\n", asm_out_file);
-        }
-      if(CONST_VECTOR_P(x))
-        {
-          fputs("\t# assemble_integer_with_op - CONST_VECTOR - FREECHAINXENON\n", asm_out_file);
-        }
-      if(LABEL_P(x))
-        {
-          fputs("\t# assemble_integer_with_op - LABEL - FREECHAINXENON\n", asm_out_file);
-        }
-      if(JUMP_P(x))
-        {
-          fputs("\t# assemble_integer_with_op - JUMP - FREECHAINXENON\n", asm_out_file);
-        }
-      if(CALL_P(x))
-        {
-          fputs("\t# assemble_integer_with_op - CALL - FREECHAINXENON\n", asm_out_file);
-        }
-      if(FAKE_CALL_P(x))
-        {
-          fputs("\t# assemble_integer_with_op - FAKE_CALL - FREECHAINXENON\n", asm_out_file);
-        }
-      if(DEBUG_INSN_P(x))
-        {
-          fputs("\t# assemble_integer_with_op - DEBUG_INSN - FREECHAINXENON\n", asm_out_file);
-        }
-      if(NONJUMP_INSN_P(x))
-        {
-          fputs("\t# assemble_integer_with_op - NONJUMP_INSN - FREECHAINXENON\n", asm_out_file);
-        }
-      if(NONDEBUG_INSN_P(x))
-        {
-          fputs("\t# assemble_integer_with_op - NONDEBUG_INSN - FREECHAINXENON\n", asm_out_file);
-        }
-      if(INSN_P(x))
-        {
-          fputs("\t# assemble_integer_with_op - INSN - FREECHAINXENON\n", asm_out_file);
-        }
-      if(NOTE_P(x))
-        {
-          fputs("\t# assemble_integer_with_op - NOTE - FREECHAINXENON\n", asm_out_file);
-        }
-      if(BARRIER_P(x))
-        {
-          fputs("\t# assemble_integer_with_op - BARRIER - FREECHAINXENON\n", asm_out_file);
-        }
-      if(JUMP_TABLE_DATA_P(x))
-        {
-          fputs("\t# assemble_integer_with_op - JUMP_TABLE_DATA - FREECHAINXENON\n", asm_out_file);
-        }
-      if(SUBREG_P(x))
-        {
-          fputs("\t# assemble_integer_with_op - SUBREG - FREECHAINXENON\n", asm_out_file);
-        }
-      if(SYMBOL_REF_P(x))
-        {
-          fputs("\t# assemble_integer_with_op - SYMBOL_REF - FREECHAINXENON\n", asm_out_file);
-        }
-      if(ANY_RETURN_P(x))
-        {
-          fputs("\t# assemble_integer_with_op - ANY_RETURN - FREECHAINXENON\n", asm_out_file);
-        }
-      if(UNARY_P(x))
-        {
-          fputs("\t# assemble_integer_with_op - UNARY - FREECHAINXENON\n", asm_out_file);
-        }
-      if(BINARY_P(x))
-        {
-          fputs("\t# assemble_integer_with_op - BINARY - FREECHAINXENON\n", asm_out_file);
-        }
-      if(ARITHMETIC_P(x))
-        {
-          fputs("\t# assemble_integer_with_op - ARITHMETIC - FREECHAINXENON\n", asm_out_file);
-        }
-      if(COMMUTATIVE_ARITH_P(x))
-        {
-          fputs("\t# assemble_integer_with_op - COMMUTATIVE_ARITH - FREECHAINXENON\n", asm_out_file);
-        }
-      if(SWAPPABLE_OPERANDS_P(x))
-        {
-          fputs("\t# assemble_integer_with_op - SWAPPABLE_OPERANDS - FREECHAINXENON\n", asm_out_file);
-        }
-      if(NON_COMMUTATIVE_P(x))
-        {
-          fputs("\t# assemble_integer_with_op - NON_COMMUTATIVE - FREECHAINXENON\n", asm_out_file);
-        }
-      if(COMMUTATIVE_P(x))
-        {
-          fputs("\t# assemble_integer_with_op - COMMUTATIVE - FREECHAINXENON\n", asm_out_file);
-        }
-      if(COMPARISON_P(x))
-        {
-          fputs("\t# assemble_integer_with_op - COMPARISON - FREECHAINXENON\n", asm_out_file);
-        }
-      if(CONSTANT_P(x))
-        {
-          fputs("\t# assemble_integer_with_op - CONSTANT - FREECHAINXENON\n", asm_out_file);
-        }
-      if(LABEL_REF_P(x))
-        {
-          fputs("\t# assemble_integer_with_op - LABEL_REF - FREECHAINXENON\n", asm_out_file);
-        }
-      if(OBJECT_P(x))
-        {
-          fputs("\t# assemble_integer_with_op - OBJECT - FREECHAINXENON\n", asm_out_file);
-        }
-     
-      fputs (op, asm_out_file);
-    }
-#else
   fputs (op, asm_out_file);
-#endif
   output_addr_const (asm_out_file, x);
   fputc ('\n', asm_out_file);
 }
@@ -3071,7 +2913,6 @@ default_assemble_integer (rtx x ATTRIBUTE_UNUSED,
   if (size > UNITS_PER_WORD && size > POINTER_SIZE_UNITS)
     return false;
 
-  fputs("\t# default_assemble_integer - FREECHAINXENON\n", asm_out_file);
   return op && (assemble_integer_with_op (op, x), true);
 }
 
@@ -3083,7 +2924,6 @@ default_assemble_integer (rtx x ATTRIBUTE_UNUSED,
 bool
 assemble_integer (rtx x, unsigned int size, unsigned int align, int force)
 {
-  fputs("\t# assemble_integer - FREECHAINXENON\n", asm_out_file);
   int aligned_p;
 
   aligned_p = (align >= MIN (size * BITS_PER_UNIT, BIGGEST_ALIGNMENT));
@@ -5463,7 +5303,6 @@ output_constant (tree exp, unsigned HOST_WIDE_INT size, unsigned int align,
 
   /* Now output the underlying data.  If we've handling the padding, return.
      Otherwise, break and ensure SIZE is the size written.  */
-     fputs("\t# output_constant - FREECHAINXENON\n", asm_out_file);
   switch (code)
     {
     case BOOLEAN_TYPE:
@@ -6716,7 +6555,6 @@ dump_tm_clone_pairs (vec<tm_alias_pair> tm_alias_pairs)
 	  switched = true;
 	}
 
-  fputs("\t# dump_tm_clone_pairs - FREECHAINXENON\n", asm_out_file);
       assemble_integer (XEXP (DECL_RTL (src), 0),
 			POINTER_SIZE_UNITS, POINTER_SIZE, 1);
       assemble_integer (XEXP (DECL_RTL (dst), 0),
