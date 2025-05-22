@@ -2127,6 +2127,7 @@ cgraph_order_sort::process ()
       u.f->expand ();
       break;
     case ORDER_VAR:
+    fputs("\t# cgraph_order_sort::process - FREECHAINXENON\n", asm_out_file);
       u.v->assemble_decl ();
       break;
     case ORDER_VAR_UNDEF:

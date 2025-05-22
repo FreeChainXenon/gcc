@@ -1483,7 +1483,7 @@ rs6000_emit_allocate_stack_1 (HOST_WIDE_INT size_int, rtx orig_sp)
       size_rtx = tmp_reg;
     }
   
-  if (TARGET_32BIT)
+  if (Pmode == SImode)
     insn = emit_insn (gen_movsi_update_stack (stack_pointer_rtx,
 					      stack_pointer_rtx,
 					      size_rtx,
